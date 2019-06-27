@@ -1,0 +1,9 @@
+Package: YoutubeDL-qt
+Version: 0.1-beta-2
+Installed-Size: 
+Section: internet
+Maintainer: Fabrice PIERROT - PIERROT INFORMATIQUE <pierrot.informatique@wanadoo.fr>
+Priority: optional
+Architecture: all
+Depends: python3, python3-pyqt5, youtube-dl, ffmpeg, python3-xdg
+Description: téléchargement audio / vidéo Youtube

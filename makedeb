@@ -1,0 +1,12 @@
+#!/bin/bash
+
+name=$(ls -d *.build | cut -d "." -f 1)
+user=$(ls -ld $name.build | awk '{print $3}')
+version=$(cat $name.build/DEBIAN/control | grep Version: | cut -d ":" -f 2 | tr -d " ")
+cp -a $name.build $name-$version
+name=$name-$version
+chown root.root $name -R
+chmod 755 $name -R
+dpkg-deb --build $name
+rm -rf $name
+chown $user.$user *.deb

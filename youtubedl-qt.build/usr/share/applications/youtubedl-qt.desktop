@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=youtubedl-qt
+Terminal=false
+Exec=python3 /usr/bin/youtubedl-qt.py
+Icon=/usr/share/icons/youtubedl-qt/youtubedl-qt.png
+Type=Application
+Categories=Network;
