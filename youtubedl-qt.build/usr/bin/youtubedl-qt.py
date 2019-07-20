@@ -3,7 +3,7 @@
 
 import sys, io, os, re
 import subprocess
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QAbstractButton
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QAbstractButton, QFileDialog
 from PyQt5.QtGui import QIcon, QPixmap
 from xdg.BaseDirectory import xdg_config_home
 from PyQt5.QtCore import Qt
@@ -43,7 +43,7 @@ class DropLabel(QLabel):
             url=url.split("&")[0]
 
             if self.mode == "video" :
-                subprocess.run([os.getenv("HOME")+"/.local/bin/youtube-dl", "-o"+folder+"%(title)s.%(ext)s", url])
+                subprocess.run([os.getenv("HOME")+"/.local/bin/youtube-dl", "-o"+folder+"%(title)s.%(ext)s","-f best",url])
             else :
                 subprocess.run([os.getenv("HOME")+"/.local/bin/youtube-dl", "-x","--audio-format","mp3","-o"+folder+"%(title)s.%(ext)s", url])
 
@@ -62,18 +62,19 @@ class DropLabel(QLabel):
 
     def changePixmap(self, event):
         # if event.button() == Qt.LeftButton:
-
-        if self.mode == "video":
-            self.mode = "audio"
+        if app.keyboardModifiers() & Qt.ControlModifier :
+            if self.mode == "video":
+                newPath = QFileDialog.getExistingDirectory(None, 'Select a folder:', self.path["video"] , QFileDialog.ShowDirsOnly)
+                self.path["video"] = newPath+"/"
+            else :
+                newPath = QFileDialog.getExistingDirectory(None, 'Select a folder:', self.path["audio"] , QFileDialog.ShowDirsOnly)
+                self.path["audio"] = newPath+"/"
         else :
-            self.mode = "video"
-        self.setPixmap(self.pixmap[self.mode])
-
-    def printEvent(self,event):
-        if event.button() == Qt.LeftButton:
-            print("bouton gauche")
-        else:
-            print("bouton droit")
+            if self.mode == "video":
+                self.mode = "audio"
+            else :
+                self.mode = "video"
+            self.setPixmap(self.pixmap[self.mode])
 
 class App(QWidget):
         def __init__(self):
